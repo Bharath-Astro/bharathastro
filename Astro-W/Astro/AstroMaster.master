@@ -228,9 +228,11 @@
                                 <span class="as_infoicon">
 <asp:Image runat="server" ID="imgUserProfilePic" AlternateText="" />
                                 </span>
-                                <span class="as_logintext">Username</span>
+                                <span class="as_logintext">My Account</span>
                             </div>
                         </a>
+                        <asp:LinkButton ID="lnkLogout" runat="server" CssClass="as_orange"
+                            OnClick="lnkLogout_Click" CausesValidation="false">Logout</asp:LinkButton>
 </div>
 
 <%--                        <div class="as_cart">

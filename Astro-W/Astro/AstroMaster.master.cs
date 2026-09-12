@@ -14,8 +14,7 @@ public partial class AstroMaster : System.Web.UI.MasterPage
         //divLoggedIn.Visible = true;
         if (!IsPostBack)
         {
-            // Check if Session["UserID"] exists and is greater than 0
-            if (Session["UserID"] != null && Convert.ToInt32(Session["UserID"]) > 0)
+            if (Request.IsAuthenticated)
             {
                 divNoLogin.Visible = false;
                 divLoggedIn.Visible = true;
@@ -111,60 +110,15 @@ public partial class AstroMaster : System.Web.UI.MasterPage
 
     protected void lnkRfLogin_Click(object sender, EventArgs e)
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["csWorking"].ConnectionString;
+        Response.Redirect("~/Login.aspx", false);
+        Context.ApplicationInstance.CompleteRequest();
+    }
 
-        string query = "SELECT CustomerInfoID, FirstName " +
-                       "FROM CustomerInfo " +
-                       "WHERE MobileNumber = @MobileNumber AND [Password] = @Password AND IsActive = 1";
-
-        int customerId = 0;
-        string firstName = "0";
-
-        using (SqlConnection conn = new SqlConnection(connectionString))
-        {
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                // Replace txtMobile and txtPassword with your actual TextBox controls
-                cmd.Parameters.AddWithValue("@MobileNumber", txtLoginMobile.Text.Trim());
-                cmd.Parameters.AddWithValue("@Password", txtLoginPassword.Text);
-
-                try
-                {
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        customerId = Convert.ToInt32(reader["CustomerInfoID"]);
-                        firstName = reader["FirstName"].ToString();
-
-                        // MessageBox.Show("Login successful! Welcome " + firstName + " (ID: " + customerId + ")");
-                        lblLoginMessage.Text = "Login successful!";
-
-                        Session["UserID"] = customerId;
-                        Session["UserFirstname"] = firstName;
-
-                        Response.Redirect(Request.RawUrl);
-                    }
-                    else
-                    {
-                        customerId = 0;
-                        firstName = "0";
-                        // MessageBox.Show("No customer existed.");
-                        lblLoginMessage.Text = "Wrong credentials.";
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    // MessageBox.Show("Error: " + ex.Message);
-                    lblLoginMessage.Text = "Error: " + ex.Message;
-                }
-            }
-        }
-
-        // You can now use customerId and firstName variables as needed
+    protected void lnkLogout_Click(object sender, EventArgs e)
+    {
+        SampleAuthentication.SignOut(Context);
+        Response.Redirect("~/Login.aspx", false);
+        Context.ApplicationInstance.CompleteRequest();
     }
 
 
