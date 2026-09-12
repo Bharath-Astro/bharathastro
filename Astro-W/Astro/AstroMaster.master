@@ -1,0 +1,687 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AstroMaster.master.cs" Inherits="AstroMaster" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <title>Bharat Astrotalk</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- stylesheet -->
+    <link href="main.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/js/plugin/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/js/plugin/airdatepicker/datepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <style type="text/css">
+        .width-logo{width:124px; margin:0px; padding:0px 10px;}
+        .logo-size{width:172px; padding:0px; margin:4px; margin-left:24px;}
+        .bg-form{background-color:#EEEEEE;}
+
+
+
+.loading-mask {
+    position: fixed; /* covers whole screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.7); /* semi-transparent */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+    </style>
+<style type="text/css">
+.as_loaderIn {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0f1f;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+/* Sun */
+.sun {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, #ffd54f, #ff9800);
+    border-radius: 50%;
+    box-shadow:
+        0 0 20px #ff9800,
+        0 0 40px #ff9800,
+        0 0 60px #ff9800;
+    z-index: 10;
+}
+
+/* Orbits */
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    animation: rotate linear infinite;
+}
+
+/* Orbit Sizes */
+.orbit-1 {
+    width: 140px;
+    height: 140px;
+    animation-duration: 4s;
+}
+
+.orbit-2 {
+    width: 240px;
+    height: 240px;
+    animation-duration: 8s;
+}
+
+.orbit-3 {
+    width: 340px;
+    height: 340px;
+    animation-duration: 12s;
+}
+
+/* Planets */
+.planet {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+}
+
+/* Planet Styles */
+.planet-1 {
+    width: 16px;
+    height: 16px;
+    background: #4fc3f7;
+    left: -8px;
+}
+
+.planet-2 {
+    width: 22px;
+    height: 22px;
+    background: #81c784;
+    left: -11px;
+}
+
+.planet-3 {
+    width: 28px;
+    height: 28px;
+    background: #ba68c8;
+    left: -14px;
+}
+
+/* Infinite Rotation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+</head>
+<body>
+    <form id="form1" runat="server"><asp:ScriptManager runat="server" ID="sm1"></asp:ScriptManager>
+    <div class="as_loader">
+<%--        <img src="assets/images/loader.png" alt="" class="img-responsive">--%>
+<%--<video autoplay loop muted playsinline class="img-responsive">
+    <source src="assets/main/roto.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+</video>--%>
+<div class="as_loaderIna">
+    <div class="sun"></div>
+
+    <div class="orbit orbit-1">
+        <div class="planet planet-1"></div>
+    </div>
+
+    <div class="orbit orbit-2">
+        <div class="planet planet-2"></div>
+    </div>
+
+    <div class="orbit orbit-3">
+        <div class="planet planet-3"></div>
+    </div>
+</div>
+    </div> 
+    <div class="as_main_wrapper">
+        <section class="as_header_wrapper">
+            <div class="as_logo logo-size">
+                <a href="Default.aspx"><img src="assets/main/logo-25-2.png" alt="" class="" /></a>
+            </div>
+            <div class="as_header_detail">
+                <div class="as_info_detail">
+                    <ul>
+                        <li>
+            <div class="dropdown">
+                <a data-bs-toggle="dropdown" href="#">
+                    <span class="as_orange"><asp:Label ID="lblCountry" runat="server" /></span>
+                </a>
+<%--                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Telugu</a></li>
+                    <li><a class="dropdown-item" href="#">Hindi</a></li>
+                    <li><a class="dropdown-item" href="#">Kannada</a></li>
+                </ul>--%>
+            </div>
+                        </li>
+                        <li>
+            <div class="dropdown">
+                <a data-bs-toggle="dropdown" href="#">
+                    <span class="as_orange"><asp:Label ID="lblLanguage" runat="server" /></span>
+                </a>
+<%--                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Telugu</a></li>
+                    <li><a class="dropdown-item" href="#">Hindi</a></li>
+                    <li><a class="dropdown-item" href="#">Kannada</a></li>
+                </ul>--%>
+            </div>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="as_infobox">
+<%--                                    <span class="as_infoicon">
+                                        <img src="assets/images/svg/mail1.svg" alt="">
+                                    </span>--%>
+                                <%--<span class="as_orange">IN</span>--%>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="as_right_info">
+<div runat="server" id="divNoLogin">
+                        <a href="javascript:;">
+                            <div class="as_infobox" data-bs-toggle="modal" data-bs-target="#as_login">
+                                <span class="as_infoicon">
+                                    <img src="assets/images/svg/login.svg" alt="">
+                                </span>
+                                <span class="as_logintext">Log in / Register</span>
+                            </div>
+                        </a>
+</div>
+<div runat="server" id="divLoggedIn" visible="false">
+                        <a href="javascript:;">
+                            <div class="as_infobox" data-bs-toggle="modal7" data-bs-target="#as_login7">
+                                <span class="as_infoicon">
+<asp:Image runat="server" ID="imgUserProfilePic" AlternateText="" />
+                                </span>
+                                <span class="as_logintext">Username</span>
+                            </div>
+                        </a>
+</div>
+
+<%--                        <div class="as_cart">
+                            <div class="as_cart_wrapper">
+                                <span><img src="assets/images/svg/cart.svg" alt=""><span class="as_cartnumber">02</span></span>
+                                $512
+                            </div>
+
+                            <div class="as_cart_box">
+								<div class="as_cart_list">
+									<ul>
+										<li>
+											<div class="as_cart_img">
+												<img src="assets/images/prod1_d.jpg" class="img-responsive">
+											</div>
+											<div class="as_cart_info">
+												<a href="#">Yellow Sapphire</a>
+												<p>1 X $20.00</p>
+												<a href="javascript:;" class="as_cart_remove"><i class="fa fa-trash"></i></a>
+											</div>
+										</li>
+										<li>
+											<div class="as_cart_img">
+												<img src="assets/images/prod2_D.jpg" class="img-responsive">
+											</div>
+											<div class="as_cart_info">
+												<a href="#">yantra</a>
+												<p>1 X $10.00</p>
+												<a href="javascript:;" class="as_cart_remove"><i class="fa fa-trash"></i></a>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="as_cart_total">
+									<p>total<span>$30.00</span></p>
+								</div>
+								<div class="as_cart_btn">
+									<button type="button" class="as_btn">view cart</button>
+									<button type="button" class="as_btn">checkout</button>
+								</div>
+							</div>
+                        </div>--%>
+                    </div>
+                </div>
+                <div class="as_menu_wrapper">
+                    <span class="as_toggle bg_overlay">
+                        <img src="assets/images/svg/menu.svg" alt="">
+                    </span>
+                    <div class="as_menu">
+                        <ul>
+                            <li><a href="Default.aspx">Home</a></li>
+                            <li><a href="free-kundli.aspx">Kundli</a></li>
+                            <li><a href="kundli-matching.aspx">Matching</a></li>
+                            <li><a href="#">Panchang</a>
+                                <ul class="as_submenu">
+                                    <li><a href="panchang-daily.aspx">Daily Panchang</a></li>
+                                    <li><a href="panchang-hora-muhurata.aspx">Hora Muhurata</a></li>
+                                    <li><a href="panchang-chaughadiya-muhurata.aspx">Chaughadiya Muhurata</a></li>
+                                </ul>
+
+                            </li>
+                            <li><a href="#">Horoscopes</a>
+                                <ul class="as_submenu">
+                                    <li><a href="horoscope-daily.aspx">Daily Horoscope</a></li>
+                                    <li><a href="horoscope-monthly.aspx">Monthly Horoscope</a></li>
+                                    <li><a href="horoscope-yearly.aspx">Yearly Horoscope</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Reports</a>
+                                <ul class="as_submenu">
+<%--                                    <li><a href="#">Premium Kundli Report</a></li>
+<li><a href="#">Premium Varshphal Report</a></li>
+<li><a href="#">Ask Our Principle Astrologer</a></li>
+<li><a href="#">Match Making Report</a></li>
+<li><a href="#">Dhan Dhanya Report</a></li>
+<li><a href="#">365 Personalized Report</a></li>
+<li><a href="#">Name Correction Report</a></li>
+<li><a href="#">Marriage Prediction Report</a></li>
+<li><a href="#">Premium Gemstone Analysis</a></li>--%>
+<li><a href="report-premium-kundli.aspx">Premium Kundli Report</a></li>
+<li><a href="report-premium-varshphal.aspx">Premium Varshphal Report</a></li>
+<li><a href="ask-Astrologer.aspx">Ask Our Principle Astrologer</a></li>
+                                    <%--<li><a href="report-ask-principle-astrologer.aspx">Ask Our Principle Astrologer</a></li>--%>
+<li><a href="report-match-making.aspx">Match Making Report</a></li>
+<li><a href="report-dhan-dhanya.aspx">Dhan Dhanya Report</a></li>
+<li><a href="report-365-personalized.aspx">365 Personalized Report</a></li>
+<li><a href="report-name-correction.aspx">Name Correction Report</a></li>
+<li><a href="report-marriage-prediction.aspx">Marriage Prediction Report</a></li>
+<li><a href="report-premium-gemstone-analysis.aspx">Premium Gemstone Analysis</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Calculators</a>
+
+                                <ul class="as_submenu">
+<%--                                    <li><a href="#">Ascendant Calculator</a></li>
+                                    <li><a href="#">Pitra Dosha Calculator</a></li>
+                                    <li><a href="#">Numerology For You</a></li>
+                                    <li><a href="#">Kaalsarpa Dosha</a></li>
+                                    <li><a href="#">Sadesati Calculator</a></li>
+                                    <li><a href="#">Manglik Calculator</a></li>
+                                    <li><a href="#">Nakshatra Calculator</a></li>
+                                    <li><a href="#">Yogini Dasha Calculator</a></li>
+                                    <li><a href="#">Moon Sign Calculator</a></li>
+                                    <li><a href="#">Biorhythm Calculator</a></li>
+                                    <li><a href="#">Atmakaraka Calculator</a></li>
+                                    <li><a href="#">Ishta Devta Calculator</a></li>
+                                    <li><a href="#">Detailed Numerology Calculator</a></li>--%>
+<li><a href="calculator-ascendant.aspx">Ascendant Calculator</a></li>
+<li><a href="calculator-pitra-dosha.aspx">Pitra Dosha Calculator</a></li>
+<li><a href="calculator-numerology-for-you.aspx">Numerology For You</a></li>
+<li><a href="calculator-kaalsarpa-dosha.aspx">Kaalsarpa Dosha</a></li>
+<li><a href="calculator-sadesati.aspx">Sadesati Calculator</a></li>
+<li><a href="calculator-manglik.aspx">Manglik Calculator</a></li>
+<li><a href="calculator-nakshatra.aspx">Nakshatra Calculator</a></li>
+<li><a href="calculator-yogini-dasha.aspx">Yogini Dasha Calculator</a></li>
+<li><a href="calculator-moon-sign.aspx">Moon Sign Calculator</a></li>
+<li><a href="calculator-biorhythm.aspx">Biorhythm Calculator</a></li>
+<li><a href="calculator-atmakaraka.aspx">Atmakaraka Calculator</a></li>
+<li><a href="calculator-ishta-devta.aspx">Ishta Devta Calculator</a></li>
+<li><a href="calculator-detailed-numerology.aspx">Detailed Numerology Calculator</a></li>
+                                </ul>
+
+                            </li>
+                            <li><a href="ask-Astrologer.aspx">Consult</a></li>
+                            <li><a href="chat-with-astrologer.aspx">Chat</a></li>
+                            <%--<li><a href="compatibility.aspx">Compatibility</a></li>--%>
+                            <%--<li><a href="numerology.aspx">Numerology</a></li>--%>
+                            <%--<li><a href="#">Best Astrologers</a></li>--%>
+                            <%--<li><a href="#">Puja & Homa</a></li>--%>
+                        </ul>
+                    </div>
+<%--                    <div class="as_search_wrapper">
+                        <img src="assets/images/search.png" alt="" class="as_search">
+
+                        <div class="as_search_boxpopup">
+                            <a href="javascript:;" class="as_cancel"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" x="0px" y="0px" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 511.76 511.76;" xml:space="preserve"> <g> <g> <path d="M436.896,74.869c-99.84-99.819-262.208-99.819-362.048,0c-99.797,99.819-99.797,262.229,0,362.048 c49.92,49.899,115.477,74.837,181.035,74.837s131.093-24.939,181.013-74.837C536.715,337.099,536.715,174.688,436.896,74.869z M361.461,331.317c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251 l-75.413-75.435l-75.392,75.413c-4.181,4.16-9.643,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251 c-8.341-8.341-8.341-21.845,0-30.165l75.392-75.413l-75.413-75.413c-8.341-8.341-8.341-21.845,0-30.165 c8.32-8.341,21.824-8.341,30.165,0l75.413,75.413l75.413-75.413c8.341-8.341,21.824-8.341,30.165,0 c8.341,8.32,8.341,21.824,0,30.165l-75.413,75.413L361.461,331.317z"/> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg></a>
+                            <div class="as_search_inner">
+                                <div class="as_search_widget">
+                                    <input type="text" name="" class="form-control" id="" placeholder="Search...">
+                                    <a href="#"><img src="assets/images/svg/search.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>--%>
+                </div>
+                <span class="as_body_overlay"></span>
+            </div>  
+        </section> 
+    <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+        <section class="as_footer_wrapper as_padderTop80">
+            <div class="container">
+<%--                    <div class="as_newsletter_wrapper as_padderBottom60">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+                                <h1 class="as_heading">Our Newsletter</h1>
+                                <p>Get Your Daily Horoscope, Daily Lovescope and Daily<br> Tarot Directly In Your Inbox</p>
+                            </div>
+                            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
+                                <div class="as_newsletter_box">
+                                    <asp:TextBox runat="server" ID="txtEmailNL" CssClass="form-control" placeholder="Enter your Email Here..."></asp:TextBox>
+                                    <asp:LinkButton runat="server" ID="lnkSubscribe" CssClass="as_btn" OnClick="lnkSubscribe_Click">subscribe now</asp:LinkButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>--%>
+
+
+<asp:UpdatePanel ID="updNewsletter" runat="server">
+    <ContentTemplate>
+        <div class="as_newsletter_wrapper as_padderBottom60">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+                    <h1 class="as_heading">Our Newsletter</h1>
+                    <p>Get Your Daily Horoscope, Daily Lovescope and Daily<br />
+                       Tarot Directly In Your Inbox</p>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
+                    <div class="as_newsletter_box">
+                        <asp:TextBox runat="server" ID="txtEmailNL" CssClass="form-control" 
+                            placeholder="Enter your Email Here..."></asp:TextBox>
+                        <asp:LinkButton runat="server" ID="lnkSubscribe" CssClass="as_btn" 
+                            OnClick="lnkSubscribe_Click">subscribe now</asp:LinkButton>
+
+                        <!-- Message label -->
+                        <asp:Label ID="lblMessageES" runat="server" CssClass="text-info" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ContentTemplate>
+</asp:UpdatePanel>
+<asp:UpdateProgress ID="updProgress" runat="server" AssociatedUpdatePanelID="updNewsletter">
+    <ProgressTemplate>
+        <div class="loading-mask">
+            <div class="loading-text">Loading...</div>
+        </div>
+    </ProgressTemplate>
+</asp:UpdateProgress>
+
+                    
+
+                    <div class="as_footer_inner as_padderTop50 as_padderBottom80">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="as_footer_widget">
+                                <div class="as_footer_logo">
+                                    <%--<a href="Default.aspx"><img src="assets/img/logo.svg" alt="" /></a>--%>
+                                    <h1>Bharat Astrology</h1>
+                                </div>
+                                <p>
+Astro Bharat is a premier online destination dedicated to bridging the gap between ancient Indian wisdom and modern life. We provide a trusted platform where individuals can connect with certified, experienced experts in Vedic Astrology, Vastu Shastra, Numerology, and plam reading.
+                                </p>
+
+                                <div class="as_share_box">
+                                    <p>Follow Us</p>
+                                    <ul>
+                                        <li><a href="javascript:;"><img src="assets/images/svg/facebook.svg" alt=""></a></li>
+                                        <li><a href="javascript:;"><img src="assets/images/svg/twitter.svg" alt=""></a></li>
+                                        <li><a href="javascript:;"><img src="assets/images/svg/google.svg" alt=""></a></li>
+                                        <li><a href="javascript:;"><img src="assets/images/svg/youtube.svg" alt=""></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="as_footer_widget">
+                               <h3 class="as_footer_heading">Our Services</h3>
+
+                               <ul>
+                                   <li><a href="#service-detail.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Horoscopes</a></li>
+                                   <li><a href="#service-detail.aspx">
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Gemstones</a></li>
+                                   <li><a href="#service-detail.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Numerology</a></li>
+                                   <li><a href="#service-detail.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Tarot Cards</a></li>
+                                   <li><a href="#service-detail.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Birth Journal</a></li>
+                               </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="as_footer_widget">
+                               <h3 class="as_footer_heading">Quick Links</h3>
+
+                               <ul>
+                                   <li><a href="about.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> About Us</a></li>
+                                   <li><a href="blog.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Blog</a></li>
+                                   <li><a href="register-as-astrologer.aspx"><span></span> Astrologer</a></li>
+                                   <li><a href="appointment.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Appointment</a></li>
+                                   <li><a href="contact.aspx"><span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="8" height="12" viewBox="0 0 8 12"> <path d="M8.000,5.998 L-0.002,11.997 L1.292,5.998 L-0.002,-0.001 L8.000,5.998 ZM1.265,9.924 L6.502,5.998 L1.265,2.071 L2.112,5.998 L1.265,9.924 ZM5.451,5.998 L2.496,8.213 L2.974,5.998 L2.496,3.783 L5.451,5.998 Z" class="cls-1"/> </svg></span> Contact Us</a></li>
+                               </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="as_footer_widget">
+                               <h3 class="as_footer_heading">Contact Us</h3>
+
+                               <ul class="as_contact_list">
+                                   <li>
+                                       <img src="assets/images/svg/map.svg" alt="">
+                                        <p>Address: 1-9-1245/2, Opp KBR Residency, Hunter Road, Hanamkonda, TG, India- 506001</p>
+                                    </li>
+                                   <li>
+                                       <img src="assets/images/svg/address.svg" alt="">
+                                        <p>
+                                            <a href="javascript:;">info@bharatastro.com</a>
+                                            <a href="javascript:;">support@bhartastro.com</a>
+                                        </p> 
+                                    </li> 
+                                   <li>
+                                       <img src="assets/images/svg/call.svg" alt="">
+                                        <p>
+                                            <a href="javascript:;">+ (91) 800 808 8607</a><%--<br>
+                                            <a href="javascript:;">+ (91) 1800-326-324</a>--%>
+                                        </p>
+                                    </li>
+                               </ul>
+                            </div>
+                        </div>
+                        </div>
+                        
+                    </div>
+            </div>
+        </section>
+        <section class="as_copyright_wrapper text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright &copy; 2026 Bharat Astrology. All Right Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </section> 
+    </div>
+    
+
+    <!-- Modal -->
+    <div id="as_login" class="modal fade" tabindex="-1" aria-labelledby="as_login" role="dialog">
+        <div class="modal-dialog">
+    
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+
+
+
+                        <asp:UpdatePanel UpdateMode="Always" ID="up_MT" runat="server">
+                            <ContentTemplate>
+
+
+
+
+<div runat="server" id="divLoginForm">
+                    <div class="as_login_box active">
+                        <div class="oform">
+                            <div class="form-group">
+                                <%--<input type="text" name="" placeholder="Enter email" class="form-control" id="">--%>
+                                <asp:TextBox runat="server" ID="txtLoginMobile" CssClass="form-control" placeholder="Enter mobile number" MaxLength="10"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtLoginMobile" SetFocusOnError="true"
+    ErrorMessage="Please enter your mobile number." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgLogin" />
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtLoginMobile" SetFocusOnError="true"
+                        ValidationExpression="^\d{10}$" ErrorMessage="Valid Mobile is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgLogin" />
+<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" Enabled="True" TargetControlID="txtLoginMobile" FilterType="Numbers" FilterMode="ValidChars">
+</cc1:FilteredTextBoxExtender>
+                            </div>
+                            <div class="form-group">
+                                <%--<input type="text" name="" placeholder="Enter password here" class="form-control" id="">--%>
+                                <asp:TextBox runat="server" ID="txtLoginPassword" CssClass="form-control" TextMode="Password" placeholder="Enter password"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+<%--                                <div class="as_login_data">
+                                    <label>Remember me
+                                         <input type="checkbox" name="as_remember_me" value="">
+                                         <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#">Forgot password ?</a>
+                                </div>--%>
+                            </div>
+                            <div class="text-center">
+                                <asp:Label runat="server" ID="lblLoginMessage" ForeColor="Red"></asp:Label><br />
+                                <%--<a href="javascript:;" class="as_btn">login</a>--%>
+                                <%--<asp:Button runat="server" ID="btnLogin" Text="Login" OnClick="btnLogin_Click" CssClass="as_btn" />--%>
+                                <asp:LinkButton runat="server" ID="lnkRfLogin" OnClick="lnkRfLogin_Click" CssClass="as_btn" ValidationGroup="vgLogin">Login</asp:LinkButton>
+                            </div>
+                        </div>
+                        <p class="text-center as_margin0 as_padderTop20">Create An Account ? 
+                            <asp:LinkButton runat="server" ID="lnkShiftSignUp" Text="SignUp" CssClass="as_orange as_signup" OnClick="lnkShiftSignUp_Click"></asp:LinkButton>
+                            
+                        </p>
+                    </div>
+</div>
+<div runat="server" id="divSignUpForm" visible="false">
+                    <div class="as_signup_box active">
+                        <div class="oform">
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfFirstname" placeholder="Enter First name" CssClass="form-control"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtRfFirstname" SetFocusOnError="true"
+                        ErrorMessage="Valid first name is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
+                            </div>
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfLastname" placeholder="Enter Last name" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <asp:DropDownList runat="server" ID="ddlRfGender" CssClass="form-control">
+                                    <asp:ListItem Value="1">Male</asp:ListItem><asp:ListItem Value="2">Female</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfEmail" placeholder="Enter email" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfMobole" placeholder="Enter mobile number" CssClass="form-control" MaxLength="10"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtRfMobole" SetFocusOnError="true"
+    ErrorMessage="Please enter your mobile number." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
+                    <asp:RegularExpressionValidator ID="revMobile" runat="server" ControlToValidate="txtRfMobole" SetFocusOnError="true"
+                        ValidationExpression="^\d{10}$" ErrorMessage="Valid Mobile is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
+<cc1:FilteredTextBoxExtender ID="fteMobile" runat="server" Enabled="True" TargetControlID="txtRfMobole" FilterType="Numbers" FilterMode="ValidChars">
+</cc1:FilteredTextBoxExtender>
+
+
+
+                            </div>
+<%--                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="TextBox3" placeholder="Enter First name" CssClass="form-control"></asp:TextBox>
+                            </div>--%>
+
+
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfPassord" placeholder="Enter password" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <asp:TextBox runat="server" ID="txtRfConfirmPassword" placeholder="Confirm password" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                            </div>
+
+                            <div class="text-center">
+                                <asp:Label runat="server" ID="lblMessage"></asp:Label>
+                                <asp:LinkButton runat="server" ID="lnkRfRegister" CssClass="as_btn" OnClick="lnkRfRegister_Click" ValidationGroup="vgReg">Sign Up</asp:LinkButton>
+                            </div>
+                        </div>
+                        <p class="text-center as_margin0 as_padderTop20">Have An Account ? 
+                            <asp:LinkButton runat="server" ID="lnkShiftLogin" CssClass="as_orange as_login" Text="Login" OnClick="lnkShiftLogin_Click"></asp:LinkButton>
+                        </p>
+                    </div>
+</div>
+                    <div runat="server" id="divRegConfirmation" visible="false">
+                        Registration successfull, please login.
+                    </div>
+
+
+
+
+                                <asp:UpdateProgress DisplayAfter="80" ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="up_MT">
+                                    <ProgressTemplate>
+<%--<div id="loader-wrapper" role="status" aria-live="polite">
+  <div class="loader"></div>
+</div>--%>
+        <div id="loading-overlay">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <div class="loading-text">Processing your request...</div>
+        </div>
+                                    </ProgressTemplate>
+                                </asp:UpdateProgress>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+
+
+
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+    <!-- javascript -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/plugin/slick/slick.min.js"></script>
+    <script src="assets/js/plugin/countto/jquery.countTo.js"></script>
+    <script src="assets/js/plugin/airdatepicker/datepicker.min.js"></script>
+    <script src="assets/js/plugin/airdatepicker/i18n/datepicker.en.js"></script>
+    <script src="assets/js/custom.js"></script>  
+    </form>
+</body>
+</html>
