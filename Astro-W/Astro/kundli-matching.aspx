@@ -1,6 +1,19 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AstroMaster.master" AutoEventWireup="true" CodeFile="kundli-matching.aspx.cs" Inherits="kundli_matching" %>
+<%@ Page Title="Kundli Matching" Language="C#" MasterPageFile="~/AstroMaster.master" AutoEventWireup="true" CodeFile="kundli-matching.aspx.cs" Inherits="kundli_matching" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<%@ Register Src="~/Controls/MatchingBirthDetails.ascx" TagPrefix="astro" TagName="BirthDetails" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server"><style>
+    #matching-form { scroll-margin-top: 30px; }
+    #matching-form .matching-help { font-size: 14px; line-height: 1.5; margin-top: 8px; }
+    #matching-form .form-control { color-scheme: dark; }
+    #matching-form select.form-control option { background: #193e50; color: white; }
+    #matching-form .matching-table, #matching-form caption { color: inherit; }
+    #matching-form .matching-score { font-size: 26px; margin: 20px 0; }
+    #matching-form .matching-table th, #matching-form .matching-table td { border-color: #57707d; }
+    #matching-form .matching-actions { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+    #matching-form .matching-step { margin-bottom: 20px; }
+    #matching-form .matching-notice { padding: 15px; margin: 15px 0; border: 1px solid #f9a44a; border-radius: 6px; }
+    #matching-form .matching-error { padding: 15px; margin: 15px 0; border: 1px solid #ff9797; border-radius: 6px; }
+</style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
         <section class="as_about_wrapper as_padderTop80 as_padderBottom80">
@@ -9,7 +22,7 @@
                     <div class="col-lg-6 col-md-6">
                         <h1 class="as_heading">KUNDLI MATCHING</h1>
                         <p>The most critical aspect that drives a healthy and happy relationship in any marriage is the ‘bond’ between the two people. A stronger bond cannot function without adequate compatibility. Kundali Matching is a Vedic compatibility analysis of a couple. From uncertainty to finding out the equation of a couple, matching Kundli assures that married life is happy, healthy, and blissful.</p>
-                        <a href="javascript:;" class="as_btn">Get Your Match Horoscope Now</a>
+                        <a href="#matching-form" class="as_btn">Get Your Match Horoscope Now</a>
 
 <%--                        <div class="as_contact_expert">
                             <span class="as_icon">
@@ -62,259 +75,59 @@
                                 <div class="row">
                                     <h3 class="text-center mb-3">Kundli Matching</h3>
 
-                                    <asp:UpdatePanel ID="updNewsletter" runat="server">
-                                        <ContentTemplate>
-
-                                            <asp:Panel runat="server" ID="pnlGroomDetails">
-                                                <label class="fw-bold text-center">Enter Groom's Details</label>
-                                                <div class="col-12">
-                                                    <label>name</label>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                <%--                                <div class="col-12">
-                                    <label>gender</label>
-                                    <div class="form-group as_select_box">
-                                        <select class="form-control" data-placeholder="Gender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div> 
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>email</label>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Email">
-                                    </div>
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>mobile number</label>
-                                    
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Mobile Number">
-                                    </div>
-                                </div>--%>
-
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>time of day</label>
-                                    <div class="form-group as_select_box" data-placeholder="Time of day">
-                                        <select class="form-control">
-                                            <option value="1"> Morning </option>
-                                            <option value="2">Afternoon</option>
-                                            <option value="3">Evening </option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>way to reach</label>
-                                    <div class="form-group as_select_box" data-placeholder="Way to reach">
-                                        <select class="form-control">
-                                            <option value="1">Phone </option>
-                                            <option value="2">Email</option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-
-                                                <div class="col-12">
-                                                    <label>Birth Details</label>
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<asp:TextBox runat="server" ID="TextBox1" CssClass="form-control p-3 text-center" placeholder="DD" MaxLength="2"></asp:TextBox>--%>
-                                                                <%--<input class="form-control" type="text" placeholder="Date">--%>
-                                                                <asp:TextBox runat="server" ID="txtKdd" CssClass="form-control p-3 text-center" placeholder="DD" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Month">--%>
-                                                                <asp:TextBox runat="server" ID="txtKmm" CssClass="form-control p-3 text-center" placeholder="MM" MaxLength="2"></asp:TextBox>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox2" CssClass="form-control p-3 text-center" placeholder="MM" MaxLength="2"></asp:TextBox>--%>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Year">--%>
-                                                                <asp:TextBox runat="server" ID="txtKyyyy" CssClass="form-control p-3 text-center" placeholder="YYYY" MaxLength="4"></asp:TextBox>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox3" CssClass="form-control p-3 text-center" placeholder="YYYY" MaxLength="4"></asp:TextBox>--%>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <%--<label>Preferred Time</label>--%>
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Hrs">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox4" CssClass="form-control p-3 text-center" placeholder="hh" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="txtKhh" CssClass="form-control p-3 text-center" placeholder="hh" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Mins">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox5" CssClass="form-control p-3 text-center" placeholder="mm" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="txtKmin" CssClass="form-control p-3 text-center" placeholder="mm" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Sec">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox6" CssClass="form-control p-3 text-center" placeholder="ss" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="txtKss" CssClass="form-control p-3 text-center" placeholder="ss" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <label>Birth place</label>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Enter your birth place">
-                                                    </div>
-                                                </div>
-                                                <label class="fw-bold text-center">Enter Bride's detail on next page</label>
-
-
-                                                <div class="btn-btm-align-2">
-                                                    <div class="row2">
-                                                        <div class="col-12 text-center">
-                                                            <asp:LinkButton runat="server" ID="LinkButton1" CssClass="as_btn">Continue</asp:LinkButton>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </asp:Panel>
-                                            <asp:Panel runat="server" ID="pnlBrideDetails" Visible="false">
-                                                <label class="fw-bold text-center">Enter Bride's Details</label>
-
-                                                <div class="col-12">
-                                                    <label>name</label>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                <%--                                <div class="col-12">
-                                    <label>gender</label>
-                                    <div class="form-group as_select_box">
-                                        <select class="form-control" data-placeholder="Gender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div> 
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>email</label>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Email">
-                                    </div>
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>mobile number</label>
-                                    
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Mobile Number">
-                                    </div>
-                                </div>--%>
-
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>time of day</label>
-                                    <div class="form-group as_select_box" data-placeholder="Time of day">
-                                        <select class="form-control">
-                                            <option value="1"> Morning </option>
-                                            <option value="2">Afternoon</option>
-                                            <option value="3">Evening </option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-                                                <%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>way to reach</label>
-                                    <div class="form-group as_select_box" data-placeholder="Way to reach">
-                                        <select class="form-control">
-                                            <option value="1">Phone </option>
-                                            <option value="2">Email</option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-
-                                                <div class="col-12">
-                                                    <label>Birth Details</label>
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<asp:TextBox runat="server" ID="TextBox1" CssClass="form-control p-3 text-center" placeholder="DD" MaxLength="2"></asp:TextBox>--%>
-                                                                <%--<input class="form-control" type="text" placeholder="Date">--%>
-                                                                <asp:TextBox runat="server" ID="TextBox1" CssClass="form-control p-3 text-center" placeholder="DD" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Month">--%>
-                                                                <asp:TextBox runat="server" ID="TextBox2" CssClass="form-control p-3 text-center" placeholder="MM" MaxLength="2"></asp:TextBox>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox2" CssClass="form-control p-3 text-center" placeholder="MM" MaxLength="2"></asp:TextBox>--%>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Year">--%>
-                                                                <asp:TextBox runat="server" ID="TextBox3" CssClass="form-control p-3 text-center" placeholder="YYYY" MaxLength="4"></asp:TextBox>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox3" CssClass="form-control p-3 text-center" placeholder="YYYY" MaxLength="4"></asp:TextBox>--%>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <%--<label>Preferred Time</label>--%>
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Hrs">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox4" CssClass="form-control p-3 text-center" placeholder="hh" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="TextBox4" CssClass="form-control p-3 text-center" placeholder="hh" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Mins">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox5" CssClass="form-control p-3 text-center" placeholder="mm" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="TextBox5" CssClass="form-control p-3 text-center" placeholder="mm" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <div class="form-group">
-                                                                <%--<input class="form-control" type="text" placeholder="Sec">--%>
-                                                                <%--<asp:TextBox runat="server" ID="TextBox6" CssClass="form-control p-3 text-center" placeholder="ss" MaxLength="2"></asp:TextBox>--%>
-                                                                <asp:TextBox runat="server" ID="TextBox6" CssClass="form-control p-3 text-center" placeholder="ss" MaxLength="2"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <label>Birth place</label>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Enter your birth place">
-                                                    </div>
-                                                </div>
-
-                                                <div class="btn-btm-align-2">
-                                                    <div class="row2">
-                                                        <div class="col-12 text-center">
-                                                            <asp:LinkButton runat="server" ID="LinkButton2" CssClass="as_btn" ValidationGroup="vg2">Continue</asp:LinkButton>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </asp:Panel>
-
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
+                                    <div id="matching-form">
+    <asp:UpdatePanel ID="updMatching" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <asp:Panel ID="pnlSandbox" runat="server" CssClass="matching-notice">
+                <strong>Sandbox mode - test results only.</strong> Both birth dates must be January 1 (any past year).
+                Actual birth dates require production Prokerala credentials. Dates are never changed automatically.
+            </asp:Panel>
+            <asp:Panel ID="pnlError" runat="server" Visible="false" CssClass="matching-error" role="alert">
+                <asp:Literal ID="litError" runat="server" />
+            </asp:Panel>
+            <asp:Panel runat="server" ID="pnlGroomDetails" DefaultButton="btnContinue">
+                <h4 class="matching-step">Step 1 of 2: Groom's details</h4>
+                <astro:BirthDetails ID="GroomDetails" runat="server" />
+                <p>Continue to enter the bride's details.</p>
+                <asp:Button runat="server" ID="btnContinue" CssClass="as_btn" Text="Continue" OnClick="Continue_Click" CausesValidation="false" />
+            </asp:Panel>
+            <asp:Panel runat="server" ID="pnlBrideDetails" Visible="false" DefaultButton="btnMatch">
+                <h4 class="matching-step">Step 2 of 2: Bride's details</h4>
+                <p><strong>Groom:</strong> <asp:Literal ID="litGroomSummary" runat="server" /></p>
+                <astro:BirthDetails ID="BrideDetails" runat="server" />
+                <p>Get Matching Results sends both birth dates, times and coordinates to Prokerala for a detailed compatibility report.</p>
+                <div class="matching-actions">
+                    <asp:Button runat="server" ID="btnBack" CssClass="as_btn" Text="Back to Groom" OnClick="Back_Click" CausesValidation="false" />
+                    <asp:Button runat="server" ID="btnMatch" CssClass="as_btn" Text="Get Matching Results" OnClick="Match_Click" CausesValidation="false" />
+                </div>
+            </asp:Panel>
+            <asp:Panel runat="server" ID="pnlResults" Visible="false" role="region" aria-label="Matching results">
+                <h3>Matching results</h3>
+                <asp:Literal ID="litResults" runat="server" />
+                <asp:Button runat="server" ID="btnEdit" CssClass="as_btn" Text="Edit Birth Details" OnClick="Edit_Click" CausesValidation="false" />
+            </asp:Panel>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <asp:UpdateProgress ID="matchingProgress" runat="server" AssociatedUpdatePanelID="updMatching" DisplayAfter="100">
+        <ProgressTemplate><p role="status" class="matching-notice">Please wait while we process your details...</p></ProgressTemplate>
+    </asp:UpdateProgress>
+</div>
+<script>
+    (function () {
+        var manager = Sys.WebForms.PageRequestManager.getInstance();
+        manager.add_initializeRequest(function (sender, args) {
+            if (sender.get_isInAsyncPostBack()) args.set_cancel(true);
+        });
+        manager.add_beginRequest(function () {
+            document.getElementById('matching-form').setAttribute('aria-busy', 'true');
+        });
+        manager.add_endRequest(function () {
+            var form = document.getElementById('matching-form');
+            form.removeAttribute('aria-busy');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }());
+</script>
 
 
 
@@ -337,7 +150,7 @@
                     <div class="col-lg-6 col-md-6">
                         <h1 class="as_heading">WHAT IS KUNDLI MATCHING</h1>
                         <p>Contemporary life that we are living is very different from what our ancestors lived in. Gender roles have evolved and people are more liberal and rational. At the same time, due to such fast lives we are losing virtues of patience and perseverance. This is why it becomes imperative to take precautionary actions and learn about possible outcomes when available. Kundali Matching gives you an idea of an astrological prediction of how much the couple’s married life will be happy, peaceful and prosperous.</p>
-                        <a href="javascript:;" class="as_btn">Match Your Horoscope Now</a>
+                        <a href="#matching-form" class="as_btn">Match Your Horoscope Now</a>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="as_about_slider1">
@@ -441,7 +254,7 @@
                                 </li>
                             </ul>
 
-                            <a href="javascript:;" class="as_btn">Get Your Match Horoscope Now</a>
+                            <a href="#matching-form" class="as_btn">Get Your Match Horoscope Now</a>
                         </div>
 
                     </div>

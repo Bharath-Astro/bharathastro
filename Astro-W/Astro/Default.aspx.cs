@@ -11,7 +11,8 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        lblTodayDate.Text = DateTime.UtcNow.AddMinutes(330).ToString("dd MMMM, yyyy");
+        lblTodayDate.Text = nsp_BATClass.BATClass.PanchangDate.ToString("dd MMMM, yyyy") +
+            (nsp_BATClass.BATClass.IsSandbox ? " (Sandbox sample)" : "");
         if (!IsPostBack)
         {
             FillMonths();
@@ -24,8 +25,13 @@ public partial class _Default : System.Web.UI.Page
 
         ///////////
         ///
-        string json = GetApiResponse();
-        var result = JsonConvert.DeserializeObject<PanchangResponse>(json);
+        PanchangResponse result = null;
+        try
+        {
+            result = JsonConvert.DeserializeObject<PanchangResponse>(GetApiResponse());
+        }
+        catch (InvalidOperationException) { /* Provider unavailable: keep Home usable. */ }
+        catch (JsonException) { /* Do not render raw provider errors. */ }
 
         if (result != null && result.data != null)
         {
@@ -170,9 +176,7 @@ public partial class _Default : System.Web.UI.Page
     }
     public static string GetApiResponse()
     {
-        DateTime utcNow = DateTime.UtcNow;
-        DateTime istNow = utcNow.AddMinutes(330); // IST = UTC + 5:30
-        string datetimeParam = utcNow.ToString("yyyy-MM-ddTHH:mm:ss+05:30");
+        string datetimeParam = nsp_BATClass.BATClass.PanchangDate.ToString("yyyy-MM-ddTHH:mm:ss+05:30");
         string encodedDatetime = Uri.EscapeDataString(datetimeParam);
 
         string token = nsp_BATClass.BATClass.GetAccessTokenProduction();

@@ -10,8 +10,8 @@ public partial class AstroMaster : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //divNoLogin.Visible = false;
-        //divLoggedIn.Visible = true;
+        accountCreated.Visible = Session["AccountCreated"] as bool? == true;
+        if (accountCreated.Visible) Session.Remove("AccountCreated");
         if (!IsPostBack)
         {
             if (Request.IsAuthenticated)
@@ -56,67 +56,10 @@ public partial class AstroMaster : System.Web.UI.MasterPage
     }
 
 
-    protected void lnkRfRegister_Click(object sender, EventArgs e)
-    {
-        // Update with your actual SQL Server details
-        string connectionString = ConfigurationManager.ConnectionStrings["csWorking"].ConnectionString;
-        string query = "INSERT INTO CustomerInfo " +
-                           "(FirstName, LastName, Gender, DateOfBirth, PlaceOfBirth, EmailID, MobileNumber, [Password], CurrentAddress, CreatedOn, ModifiedOn, IsActive) " +
-                           "VALUES (@FirstName, @LastName, @Gender, @DateOfBirth, @PlaceOfBirth, @EmailID, @MobileNumber, @Password, @CurrentAddress, @CreatedOn, @ModifiedOn, @IsActive)";
-
-        using (SqlConnection conn = new SqlConnection(connectionString))
-        {
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                // Example values (replace with TextBox/ComboBox controls in your form)
-                cmd.Parameters.AddWithValue("@FirstName", txtRfFirstname.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtRfLastname.Text);
-                cmd.Parameters.AddWithValue("@Gender", ddlRfGender.SelectedValue); // e.g. 1=Male, 2=Female
-                cmd.Parameters.AddWithValue("@DateOfBirth", new DateTime(1990, 5, 20));
-                cmd.Parameters.AddWithValue("@PlaceOfBirth", "0");
-                cmd.Parameters.AddWithValue("@EmailID", txtRfEmail.Text);
-                cmd.Parameters.AddWithValue("@MobileNumber", txtRfMobole.Text);
-                cmd.Parameters.AddWithValue("@Password", "");
-                cmd.Parameters.AddWithValue("@CurrentAddress", "0");
-                cmd.Parameters.AddWithValue("@CreatedOn", DateTime.UtcNow.AddMinutes(330));
-                cmd.Parameters.AddWithValue("@ModifiedOn", DateTime.Now);
-                cmd.Parameters.AddWithValue("@IsActive", 1);
-
-                try
-                {
-                    conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    if (rows > 0)
-                    {
-                        // MessageBox.Show("Record inserted successfully!");
-                        divRegConfirmation.Visible = true;
-                    }
-                    else
-                    {
-                        //  MessageBox.Show("Insert failed.");
-                        lblMessage.Text = "Insert failed.";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //  MessageBox.Show("Error: " + ex.Message);
-                    lblMessage.Text ="Error: " + ex.Message;
-                }
-            }
-        }
-
-
-    }
-
-    protected void lnkRfLogin_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("~/Login.aspx", false);
-        Context.ApplicationInstance.CompleteRequest();
-    }
 
     protected void lnkLogout_Click(object sender, EventArgs e)
     {
-        SampleAuthentication.SignOut(Context);
+        ApplicationAuthentication.SignOut(Context);
         Response.Redirect("~/Login.aspx", false);
         Context.ApplicationInstance.CompleteRequest();
     }
@@ -131,19 +74,6 @@ public partial class AstroMaster : System.Web.UI.MasterPage
             CountryResponse response = reader.Country(ipAddress);
             return response.Country.IsoCode; // e.g. "IN", "US"
         }
-    }
-    protected void lnkShiftSignUp_Click(object sender, EventArgs e)
-    {
-        divSignUpForm.Visible = true;
-        divLoginForm.Visible = false;
-        divRegConfirmation.Visible = false;
-    }
-
-    protected void lnkShiftLogin_Click(object sender, EventArgs e)
-    {
-        divSignUpForm.Visible = false;
-        divLoginForm.Visible = true;
-        divRegConfirmation.Visible = false;
     }
 
 

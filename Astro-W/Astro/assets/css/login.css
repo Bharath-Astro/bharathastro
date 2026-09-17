@@ -75,3 +75,19 @@
 @media (max-width: 480px) {
     .login-card { padding: 24px; }
 }
+
+.auth-divider { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: #496071; }
+.google-button {
+    display: block; width: 100%; min-height: 50px; padding: 10px 16px;
+    background: var(--white-color); color: #1f1f1f; border: 1px solid #747775;
+    border-radius: 4px; font: inherit; cursor: pointer;
+}
+.google-button:disabled { opacity: .65; cursor: wait; }
+.google-button:focus-visible, .auth-footer a:focus-visible { outline: 2px solid var(--secondary-color); outline-offset: 3px; }
+.auth-note { display: block; color: #b2c5d2; font-size: 13px; margin: 10px 0 16px; line-height: 1.5; }
+.auth-note:empty { display: none; }
+.auth-footer { margin: 24px 0 0; text-align: center; }
+.auth-footer a { text-decoration: underline; }
+.signup-page .login-logo { width: 120px; margin-bottom: 24px; }
+.signup-page .login-intro { margin-bottom: 12px; }

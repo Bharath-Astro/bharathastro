@@ -213,8 +213,8 @@
                     </ul>
                     <div class="as_right_info">
 <div runat="server" id="divNoLogin">
-                        <a href="javascript:;">
-                            <div class="as_infobox" data-bs-toggle="modal" data-bs-target="#as_login">
+                        <a href="<%= ResolveUrl("~/Login.aspx") %>">
+                            <div class="as_infobox">
                                 <span class="as_infoicon">
                                     <img src="assets/images/svg/login.svg" alt="">
                                 </span>
@@ -382,6 +382,8 @@
             </div>  
         </section> 
     <div>
+        <div id="accountCreated" runat="server" visible="false" role="status"
+            style="padding:12px 24px;background:#17384e;color:#b6f3cc;text-align:center;">Your account has been created. Welcome to Bharat Astrotalk!</div>
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
         
         </asp:ContentPlaceHolder>
@@ -532,149 +534,7 @@ Astro Bharat is a premier online destination dedicated to bridging the gap betwe
     </div>
     
 
-    <!-- Modal -->
-    <div id="as_login" class="modal fade" tabindex="-1" aria-labelledby="as_login" role="dialog">
-        <div class="modal-dialog">
-    
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
-                    <h4 class="modal-title">Login</h4>
-                </div>
-                <div class="modal-body">
-
-
-
-                        <asp:UpdatePanel UpdateMode="Always" ID="up_MT" runat="server">
-                            <ContentTemplate>
-
-
-
-
-<div runat="server" id="divLoginForm">
-                    <div class="as_login_box active">
-                        <div class="oform">
-                            <div class="form-group">
-                                <%--<input type="text" name="" placeholder="Enter email" class="form-control" id="">--%>
-                                <asp:TextBox runat="server" ID="txtLoginMobile" CssClass="form-control" placeholder="Enter mobile number" MaxLength="10"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtLoginMobile" SetFocusOnError="true"
-    ErrorMessage="Please enter your mobile number." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgLogin" />
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtLoginMobile" SetFocusOnError="true"
-                        ValidationExpression="^\d{10}$" ErrorMessage="Valid Mobile is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgLogin" />
-<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" Enabled="True" TargetControlID="txtLoginMobile" FilterType="Numbers" FilterMode="ValidChars">
-</cc1:FilteredTextBoxExtender>
-                            </div>
-                            <div class="form-group">
-                                <%--<input type="text" name="" placeholder="Enter password here" class="form-control" id="">--%>
-                                <asp:TextBox runat="server" ID="txtLoginPassword" CssClass="form-control" TextMode="Password" placeholder="Enter password"></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-<%--                                <div class="as_login_data">
-                                    <label>Remember me
-                                         <input type="checkbox" name="as_remember_me" value="">
-                                         <span class="checkmark"></span>
-                                    </label>
-                                    <a href="#">Forgot password ?</a>
-                                </div>--%>
-                            </div>
-                            <div class="text-center">
-                                <asp:Label runat="server" ID="lblLoginMessage" ForeColor="Red"></asp:Label><br />
-                                <%--<a href="javascript:;" class="as_btn">login</a>--%>
-                                <%--<asp:Button runat="server" ID="btnLogin" Text="Login" OnClick="btnLogin_Click" CssClass="as_btn" />--%>
-                                <asp:LinkButton runat="server" ID="lnkRfLogin" OnClick="lnkRfLogin_Click" CssClass="as_btn" ValidationGroup="vgLogin">Login</asp:LinkButton>
-                            </div>
-                        </div>
-                        <p class="text-center as_margin0 as_padderTop20">Create An Account ? 
-                            <asp:LinkButton runat="server" ID="lnkShiftSignUp" Text="SignUp" CssClass="as_orange as_signup" OnClick="lnkShiftSignUp_Click"></asp:LinkButton>
-                            
-                        </p>
-                    </div>
-</div>
-<div runat="server" id="divSignUpForm" visible="false">
-                    <div class="as_signup_box active">
-                        <div class="oform">
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfFirstname" placeholder="Enter First name" CssClass="form-control"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtRfFirstname" SetFocusOnError="true"
-                        ErrorMessage="Valid first name is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
-                            </div>
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfLastname" placeholder="Enter Last name" CssClass="form-control"></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <asp:DropDownList runat="server" ID="ddlRfGender" CssClass="form-control">
-                                    <asp:ListItem Value="1">Male</asp:ListItem><asp:ListItem Value="2">Female</asp:ListItem>
-                                </asp:DropDownList>
-                            </div>
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfEmail" placeholder="Enter email" CssClass="form-control"></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfMobole" placeholder="Enter mobile number" CssClass="form-control" MaxLength="10"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtRfMobole" SetFocusOnError="true"
-    ErrorMessage="Please enter your mobile number." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
-                    <asp:RegularExpressionValidator ID="revMobile" runat="server" ControlToValidate="txtRfMobole" SetFocusOnError="true"
-                        ValidationExpression="^\d{10}$" ErrorMessage="Valid Mobile is required." CssClass="text-danger" Display="Dynamic" ValidationGroup="vgReg" />
-<cc1:FilteredTextBoxExtender ID="fteMobile" runat="server" Enabled="True" TargetControlID="txtRfMobole" FilterType="Numbers" FilterMode="ValidChars">
-</cc1:FilteredTextBoxExtender>
-
-
-
-                            </div>
-<%--                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="TextBox3" placeholder="Enter First name" CssClass="form-control"></asp:TextBox>
-                            </div>--%>
-
-
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfPassord" placeholder="Enter password" CssClass="form-control" TextMode="Password"></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <asp:TextBox runat="server" ID="txtRfConfirmPassword" placeholder="Confirm password" CssClass="form-control" TextMode="Password"></asp:TextBox>
-                            </div>
-
-                            <div class="text-center">
-                                <asp:Label runat="server" ID="lblMessage"></asp:Label>
-                                <asp:LinkButton runat="server" ID="lnkRfRegister" CssClass="as_btn" OnClick="lnkRfRegister_Click" ValidationGroup="vgReg">Sign Up</asp:LinkButton>
-                            </div>
-                        </div>
-                        <p class="text-center as_margin0 as_padderTop20">Have An Account ? 
-                            <asp:LinkButton runat="server" ID="lnkShiftLogin" CssClass="as_orange as_login" Text="Login" OnClick="lnkShiftLogin_Click"></asp:LinkButton>
-                        </p>
-                    </div>
-</div>
-                    <div runat="server" id="divRegConfirmation" visible="false">
-                        Registration successfull, please login.
-                    </div>
-
-
-
-
-                                <asp:UpdateProgress DisplayAfter="80" ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="up_MT">
-                                    <ProgressTemplate>
-<%--<div id="loader-wrapper" role="status" aria-live="polite">
-  <div class="loader"></div>
-</div>--%>
-        <div id="loading-overlay">
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
-            </div>
-            <div class="loading-text">Processing your request...</div>
-        </div>
-                                    </ProgressTemplate>
-                                </asp:UpdateProgress>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-
-
-
-                </div>
-            </div>
-    
-        </div>
-    </div>
+    <!-- Account creation and login are served by the public authentication pages. -->
 
     <!-- javascript -->
     <script src="assets/js/jquery.min.js"></script>

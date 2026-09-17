@@ -56,7 +56,7 @@ function Submit-Login($Session, [string]$Phone, [string]$Password, [string]$Retu
 
 $anonymous = [Microsoft.PowerShell.Commands.WebRequestSession]::new()
 $routes = @('/') + @(Get-ChildItem $sourceRoot -Recurse -Filter '*.aspx' |
-    Where-Object { $_.Name -ne 'Login.aspx' -and $_.FullName -notmatch '[\\/]assets[\\/]' } |
+    Where-Object { $_.Name -notin @('Login.aspx', 'CreateAccount.aspx', 'GoogleCallback.aspx') -and $_.FullName -notmatch '[\\/]assets[\\/]' } |
     ForEach-Object { '/' + [IO.Path]::GetRelativePath($sourceRoot, $_.FullName).Replace('\', '/') })
 foreach ($route in $routes) {
     $response = Request-Page $route $anonymous
@@ -71,7 +71,7 @@ Write-Output 'PASS: login design assets load without authentication.'
 
 foreach ($case in @(
     @{ Phone = ''; Password = ''; Error = 'Please fill in both fields.' },
-    @{ Phone = ''; Password = $samplePassword; Error = 'Please enter your phone number.' },
+    @{ Phone = ''; Password = $samplePassword; Error = 'Please enter your phone number or email.' },
     @{ Phone = $samplePhone; Password = ''; Error = 'Please enter your password.' },
     @{ Phone = '9999999999'; Password = $samplePassword; Error = 'Invalid phone number or password.' },
     @{ Phone = $samplePhone; Password = 'incorrect'; Error = 'Invalid phone number or password.' },

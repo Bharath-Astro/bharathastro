@@ -14,87 +14,96 @@ namespace nsp_BATClass
 {
     public class BATClass
     {
-        public BATClass()
+        public static bool IsSandbox
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            get
+            {
+                return string.Equals(Environment.GetEnvironmentVariable("PROKERALA_SANDBOX") ??
+                    ConfigurationManager.AppSettings["Prokerala:Sandbox"], "true", StringComparison.OrdinalIgnoreCase);
+            }
         }
+
+        public static DateTime PanchangDate
+        {
+            get
+            {
+                DateTime ist = DateTime.UtcNow.AddMinutes(330);
+                // The sandbox accepts January 1 only. Never substitute a user's birth date.
+                return IsSandbox ? new DateTime(ist.Year, 1, 1).Add(ist.TimeOfDay) : ist;
+            }
+        }
+
+        private static readonly object TokenLock = new object();
+        private static string cachedToken, cachedClientId, cachedClientSecret;
+        private static DateTime refreshAtUtc;
 
         public static string GetAccessToken()
         {
-            string clientId = "b3a76933-4ab3-4e12-9206-416967f2e197";
-            string clientSecret = "jEkXvDr9KQNOUYgkFmFvvXos0Z7dNF8vR0FgFmXL";
-
-            string tokenUrl = "https://api.prokerala.com/token";
-
-            string postData = string.Format(
-                "grant_type=client_credentials&client_id={0}&client_secret={1}",
-                clientId,
-                clientSecret
-            );
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(tokenUrl);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            byte[] data = Encoding.UTF8.GetBytes(postData);
-            request.ContentLength = data.Length;
-
-            using (Stream stream = request.GetRequestStream())
+            string clientId = Environment.GetEnvironmentVariable("PROKERALA_CLIENT_ID");
+            string clientSecret = Environment.GetEnvironmentVariable("PROKERALA_CLIENT_SECRET");
+            // Never combine credentials from different configuration sources.
+            if (string.IsNullOrWhiteSpace(clientId) && string.IsNullOrWhiteSpace(clientSecret))
             {
-                stream.Write(data, 0, data.Length);
+                clientId = ConfigurationManager.AppSettings["Prokerala:ClientId"];
+                clientSecret = ConfigurationManager.AppSettings["Prokerala:ClientSecret"];
             }
+            if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
+                throw new InvalidOperationException("Prokerala credentials are not configured on the server.");
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            lock (TokenLock)
             {
-                string json = reader.ReadToEnd();
+                if (cachedToken != null && DateTime.UtcNow < refreshAtUtc &&
+                    cachedClientId == clientId && cachedClientSecret == clientSecret)
+                    return cachedToken;
 
-                // Simple extraction (use JSON parser in real projects)
-                string accessToken = json.Split(new string[] { "\"access_token\":\"" }, StringSplitOptions.None)[1]
-                                          .Split('"')[0];
-
-                return accessToken;
+                var request = (HttpWebRequest)WebRequest.Create("https://api.prokerala.com/token");
+                request.Method = "POST";
+                request.AllowAutoRedirect = false;
+                request.Timeout = 20000;
+                request.ReadWriteTimeout = 20000;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Accept = "application/json";
+                byte[] body = Encoding.UTF8.GetBytes("grant_type=client_credentials&client_id=" +
+                    Uri.EscapeDataString(clientId) + "&client_secret=" + Uri.EscapeDataString(clientSecret));
+                request.ContentLength = body.Length;
+                try
+                {
+                    using (Stream stream = request.GetRequestStream()) stream.Write(body, 0, body.Length);
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var token = Newtonsoft.Json.Linq.JObject.Parse(reader.ReadToEnd());
+                        string value = (string)token["access_token"];
+                        int seconds;
+                        if (string.IsNullOrWhiteSpace(value) ||
+                            !string.Equals((string)token["token_type"], "Bearer", StringComparison.OrdinalIgnoreCase) ||
+                            !int.TryParse((string)token["expires_in"], out seconds) || seconds <= 0)
+                            throw new InvalidOperationException("Prokerala returned an invalid token response.");
+                        cachedToken = value;
+                        cachedClientId = clientId;
+                        cachedClientSecret = clientSecret;
+                        refreshAtUtc = DateTime.UtcNow.AddSeconds(Math.Max(0, seconds - 60));
+                        return cachedToken;
+                    }
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Response != null) ex.Response.Dispose();
+                    // Never expose provider response bodies, credentials, or tokens.
+                    throw new InvalidOperationException("Unable to authenticate with Prokerala. Check server configuration and API availability.");
+                }
+                catch (Newtonsoft.Json.JsonException)
+                {
+                    throw new InvalidOperationException("Prokerala returned an invalid token response.");
+                }
             }
         }
 
+        // Legacy alias. The configured client selects sandbox/production.
+        // Never fall back to the old embedded production credentials.
         public static string GetAccessTokenProduction()
         {
-            string clientId = "f994c50c-4f56-47b6-a40d-6e371626195c"; // "4e06423f-1d4a-4f05-908e-e3cfba0c72df";
-            string clientSecret = "gwfaBz92088lSog63wYTEy4xNcAwN3N9ytVptcrM"; // "08y7rV0yA2dLBmjFcFHdPUleJ1aYpZS9AbFJYd6V";
-
-            string tokenUrl = "https://api.prokerala.com/token";
-
-            string postData = string.Format(
-                "grant_type=client_credentials&client_id={0}&client_secret={1}",
-                clientId,
-                clientSecret
-            );
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(tokenUrl);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            byte[] data = Encoding.UTF8.GetBytes(postData);
-            request.ContentLength = data.Length;
-
-            using (Stream stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-            {
-                string json = reader.ReadToEnd();
-
-                // Simple extraction (use JSON parser in real projects)
-                string accessToken = json.Split(new string[] { "\"access_token\":\"" }, StringSplitOptions.None)[1]
-                                          .Split('"')[0];
-
-                return accessToken;
-            }
+            return GetAccessToken();
         }
     }
 }

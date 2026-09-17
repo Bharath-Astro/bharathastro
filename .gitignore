@@ -39,6 +39,10 @@ ScaffoldingReadMe.txt
 # dotenv environment variables file
 .env
 
+# Local demo account data (including atomic-write temporary files)
+Astro-W/Astro/App_Data/demo-accounts.json*
+Astro-W/Astro/App_Data/Prokerala.local.config
+
 # Others
 ~$*
 *~
