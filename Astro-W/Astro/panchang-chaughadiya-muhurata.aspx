@@ -204,9 +204,10 @@
 <div class="container">
     <div class="as_hora_title_section">
 
-        <h2>Chaughadiya for 5 May 2026</h2>
-        <p class="as_hora_location">Mumbai, Maharashtra</p>
-        <p>The following Chaughadiya are shown for the date, 5 May 2026 and place 'Mumbai, Maharashtra'. These Panchang calculations are based on Drik Ganit i.e. current sidereal positions of planets in the sky. The Ayanamsha used is Lahiri or Chitrapakshiya. The current day sunrise is taken as the time to calculate planet positions and accordingly other drika panchang calculations.</p>
+        <h2>Chaughadiya for <%= DisplayDate %></h2>
+        <p class="as_hora_location"><%= DisplayCity %></p>
+        <p>Timings use Drik calculations and Lahiri Ayanamsha for the selected date and place.</p>
+        <p role="status"><%= Status %></p>
 
         <!-- Chaughadiya Grid -->
         <div class="as_hora_grid">
@@ -216,39 +217,12 @@
                 <div class="as_hora_card_header">
                     <h2>Day Chaughadiya</h2>
                 </div>
-                <div class="as_hora_card_body">
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Rog</span>
-                        <span class="as_cr_time">06:08:25 - 07:45:08</span>
+                <div class="as_hora_card_body"><asp:Repeater ID="DayTimings" runat="server"><ItemTemplate>
+                    <div class='as_chaug_row <%#: Eval("CssClass") %>'>
+                        <span class="as_cr_name"><%#: Eval("Name") %></span>
+                        <span class="as_cr_time"><%#: Eval("Time") %></span>
                     </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Udveg</span>
-                        <span class="as_cr_time">07:45:08 - 09:21:51</span>
-                    </div>
-                    <div class="as_chaug_row chaug-neutral">
-                        <span class="as_cr_name">Char</span>
-                        <span class="as_cr_time">09:21:51 - 10:58:34</span>
-                    </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Labh</span>
-                        <span class="as_cr_time">10:58:34 - 12:35:17</span>
-                    </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Amrit</span>
-                        <span class="as_cr_time">12:35:17 - 14:12:00</span>
-                    </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Kaal</span>
-                        <span class="as_cr_time">14:12:00 - 15:48:43</span>
-                    </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Shubh</span>
-                        <span class="as_cr_time">15:48:43 - 17:25:26</span>
-                    </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Rog</span>
-                        <span class="as_cr_time">17:25:26 - 19:02:10</span>
-                    </div>
+                </ItemTemplate></asp:Repeater>
                 </div>
             </div>
 
@@ -257,39 +231,12 @@
                 <div class="as_hora_card_header">
                     <h2>Night Chaughadiya</h2>
                 </div>
-                <div class="as_hora_card_body">
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Kaal</span>
-                        <span class="as_cr_time">19:02:10 - 20:25:26</span>
+                <div class="as_hora_card_body"><asp:Repeater ID="NightTimings" runat="server"><ItemTemplate>
+                    <div class='as_chaug_row <%#: Eval("CssClass") %>'>
+                        <span class="as_cr_name"><%#: Eval("Name") %></span>
+                        <span class="as_cr_time"><%#: Eval("Time") %></span>
                     </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Labh</span>
-                        <span class="as_cr_time">20:25:26 - 21:48:43</span>
-                    </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Udveg</span>
-                        <span class="as_cr_time">21:48:43 - 23:12:00</span>
-                    </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Shubh</span>
-                        <span class="as_cr_time">23:12:00 - 00:35:17</span>
-                    </div>
-                    <div class="as_chaug_row chaug-good">
-                        <span class="as_cr_name">Amrit</span>
-                        <span class="as_cr_time">00:35:17 - 01:58:34</span>
-                    </div>
-                    <div class="as_chaug_row chaug-neutral">
-                        <span class="as_cr_name">Char</span>
-                        <span class="as_cr_time">01:58:34 - 03:21:51</span>
-                    </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Rog</span>
-                        <span class="as_cr_time">03:21:51 - 04:45:08</span>
-                    </div>
-                    <div class="as_chaug_row chaug-bad">
-                        <span class="as_cr_name">Kaal</span>
-                        <span class="as_cr_time">04:45:08 - 06:08:25</span>
-                    </div>
+                </ItemTemplate></asp:Repeater>
                 </div>
             </div>
 
@@ -320,13 +267,13 @@
 
         <!-- Bottom Cards -->
         <div class="as_panchang_bottom_cards">
-            <a href="panchang-chaughadiya-muhurata.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-chaughadiya-muhurata.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Chaughadiya<br>Muhurata</h2>
             </a>
-            <a href="panchang-hora-muhurata.aspx" class="as_panchang_bottom_card1">
+            <a href='<%= Link("panchang-hora-muhurata.aspx") %>' class="as_panchang_bottom_card1">
                 <h2>Hora<br>Muhurata</h2>
             </a>
-            <a href="panchang-daily.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-daily.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Daily<br>Panchang</h2>
             </a>
         </div>

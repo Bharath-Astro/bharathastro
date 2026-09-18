@@ -191,9 +191,10 @@
      ======================================== -->
 <div class="container">
     <div class="as_hora_title_section">
-        <h2>Hora For 5 May 2026</h2>
-        <p class="as_hora_location">Mumbai, Maharashtra</p>
-        <p>The following Hora Muhurta are shown for the date 5 May 2026 and place 'Mumbai, Maharashtra'. These Panchang calculations are based on Drik Ganit i.e. current sidereal positions of planets in the sky. The Ayanamsha used is Lahiri or Chitrapakshiya. The current day sunrise is taken as the time to calculate planet positions and accordingly other drika panchang calculations.</p>
+        <h2>Hora For <%= DisplayDate %></h2>
+        <p class="as_hora_location"><%= DisplayCity %></p>
+        <p>Timings use Drik calculations and Lahiri Ayanamsha for the selected date and place.</p>
+        <p role="status"><%= Status %></p>
     </div>
 
     <!-- Hora Grid -->
@@ -204,55 +205,12 @@
             <div class="as_hora_card_header">
                 <h2>Day Hora</h2>
             </div>
-            <div class="as_hora_card_body">
-                <div class="as_hora_row planet-mars">
-                    <span class="as_hr_planet">Mars</span>
-                    <span class="as_hr_time">6:8 - 7:8</span>
-                </div>
-                <div class="as_hora_row planet-sun">
-                    <span class="as_hr_planet">Sun</span>
-                    <span class="as_hr_time">7:8 - 8:8</span>
-                </div>
-                <div class="as_hora_row planet-venus">
-                    <span class="as_hr_planet">Venus</span>
-                    <span class="as_hr_time">8:8 - 9:8</span>
-                </div>
-                <div class="as_hora_row planet-mercury">
-                    <span class="as_hr_planet">Mercury</span>
-                    <span class="as_hr_time">9:8 - 10:8</span>
-                </div>
-                <div class="as_hora_row planet-moon">
-                    <span class="as_hr_planet">Moon</span>
-                    <span class="as_hr_time">10:8 - 11:8</span>
-                </div>
-                <div class="as_hora_row planet-saturn">
-                    <span class="as_hr_planet">Saturn</span>
-                    <span class="as_hr_time">11:8 - 12:8</span>
-                </div>
-                <div class="as_hora_row planet-jupiter">
-                    <span class="as_hr_planet">Jupiter</span>
-                    <span class="as_hr_time">12:8 - 13:8</span>
-                </div>
-                <div class="as_hora_row planet-mars">
-                    <span class="as_hr_planet">Mars</span>
-                    <span class="as_hr_time">13:8 - 14:8</span>
-                </div>
-                <div class="as_hora_row planet-sun">
-                    <span class="as_hr_planet">Sun</span>
-                    <span class="as_hr_time">14:8 - 15:8</span>
-                </div>
-                <div class="as_hora_row planet-venus">
-                    <span class="as_hr_planet">Venus</span>
-                    <span class="as_hr_time">15:8 - 16:8</span>
-                </div>
-                <div class="as_hora_row planet-mercury">
-                    <span class="as_hr_planet">Mercury</span>
-                    <span class="as_hr_time">16:8 - 17:8</span>
-                </div>
-                <div class="as_hora_row planet-moon">
-                    <span class="as_hr_planet">Moon</span>
-                    <span class="as_hr_time">17:8 - 18:8</span>
-                </div>
+            <div class="as_hora_card_body"><asp:Repeater ID="DayTimings" runat="server"><ItemTemplate>
+                    <div class='as_hora_row <%#: Eval("CssClass") %>'>
+                        <span class="as_hr_planet"><%#: Eval("Name") %></span>
+                        <span class="as_hr_time"><%#: Eval("Time") %></span>
+                    </div>
+                </ItemTemplate></asp:Repeater>
             </div>
         </div>
 
@@ -261,55 +219,12 @@
             <div class="as_hora_card_header">
                 <h2>Night Hora</h2>
             </div>
-            <div class="as_hora_card_body">
-                <div class="as_hora_row planet-saturn">
-                    <span class="as_hr_planet">Saturn</span>
-                    <span class="as_hr_time">18:8 - 19:8</span>
-                </div>
-                <div class="as_hora_row planet-jupiter">
-                    <span class="as_hr_planet">Jupiter</span>
-                    <span class="as_hr_time">19:8 - 20:8</span>
-                </div>
-                <div class="as_hora_row planet-mars">
-                    <span class="as_hr_planet">Mars</span>
-                    <span class="as_hr_time">20:8 - 21:8</span>
-                </div>
-                <div class="as_hora_row planet-sun">
-                    <span class="as_hr_planet">Sun</span>
-                    <span class="as_hr_time">21:8 - 22:8</span>
-                </div>
-                <div class="as_hora_row planet-venus">
-                    <span class="as_hr_planet">Venus</span>
-                    <span class="as_hr_time">22:8 - 23:8</span>
-                </div>
-                <div class="as_hora_row planet-mercury">
-                    <span class="as_hr_planet">Mercury</span>
-                    <span class="as_hr_time">23:8 - 0:8</span>
-                </div>
-                <div class="as_hora_row planet-moon">
-                    <span class="as_hr_planet">Moon</span>
-                    <span class="as_hr_time">0:8 - 1:8</span>
-                </div>
-                <div class="as_hora_row planet-saturn">
-                    <span class="as_hr_planet">Saturn</span>
-                    <span class="as_hr_time">1:8 - 2:8</span>
-                </div>
-                <div class="as_hora_row planet-jupiter">
-                    <span class="as_hr_planet">Jupiter</span>
-                    <span class="as_hr_time">2:8 - 3:8</span>
-                </div>
-                <div class="as_hora_row planet-mars">
-                    <span class="as_hr_planet">Mars</span>
-                    <span class="as_hr_time">3:8 - 4:8</span>
-                </div>
-                <div class="as_hora_row planet-sun">
-                    <span class="as_hr_planet">Sun</span>
-                    <span class="as_hr_time">4:8 - 5:8</span>
-                </div>
-                <div class="as_hora_row planet-venus">
-                    <span class="as_hr_planet">Venus</span>
-                    <span class="as_hr_time">5:8 - 6:8</span>
-                </div>
+            <div class="as_hora_card_body"><asp:Repeater ID="NightTimings" runat="server"><ItemTemplate>
+                    <div class='as_hora_row <%#: Eval("CssClass") %>'>
+                        <span class="as_hr_planet"><%#: Eval("Name") %></span>
+                        <span class="as_hr_time"><%#: Eval("Time") %></span>
+                    </div>
+                </ItemTemplate></asp:Repeater>
             </div>
         </div>
 
@@ -317,13 +232,13 @@
 
         <!-- Bottom Cards -->
         <div class="as_panchang_bottom_cards">
-            <a href="panchang-chaughadiya-muhurata.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-chaughadiya-muhurata.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Chaughadiya<br>Muhurata</h2>
             </a>
-            <a href="panchang-hora-muhurata.aspx" class="as_panchang_bottom_card1">
+            <a href='<%= Link("panchang-hora-muhurata.aspx") %>' class="as_panchang_bottom_card1">
                 <h2>Hora<br>Muhurata</h2>
             </a>
-            <a href="panchang-daily.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-daily.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Daily<br>Panchang</h2>
             </a>
         </div>

@@ -543,7 +543,7 @@
      ======================================== -->
 <div class="as_panchang_header">
     <div class="container">
-        <h1>Panchang For Tuesday, 5 May 2026</h1>
+        <h1>Panchang For <%= DisplayDate %></h1>
     </div>
 </div>
 
@@ -558,7 +558,7 @@
             <div class="as_pf_group">
                 <label>Select Date</label>
                 <div class="as_pf_city_input">
-                    <input type="text" class="form-control" value="May 5, 2026" readonly>
+                    <input type="date" id="txtDate" runat="server" ClientIDMode="Static" class="form-control" aria-label="Select Date" min="1900-01-01" max="2099-12-31">
                     <span class="as_pf_city_icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     </span>
@@ -566,10 +566,10 @@
             </div>
 
             <!-- Country (Desktop) -->
-            <div class="as_pf_group as_pf_city_wrap" style="min-width: 180px;">
+            <div id="panchangPlace" class="as_pf_group as_pf_city_wrap" style="min-width: 180px;">
                 <label>Select Panchang Place</label>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <select class="form-control" style="flex: 2; min-width: 160px;" id="ddlCountry">
+                    <select class="form-control" style="flex: 2; min-width: 160px;" id="ddlCountry" runat="server" ClientIDMode="Static" aria-label="Select country">
                         <option value="AF">Afghanistan</option>
                         <option value="AL">Albania</option>
                         <option value="DZ">Algeria</option>
@@ -624,7 +624,7 @@
                         <option value="ZW">Zimbabwe</option>
                     </select>
                     <div class="as_pf_city_input" style="flex: 3; min-width: 200px;">
-                        <input type="text" class="form-control" value="Mumbai, Maharashtra" placeholder="Type Birth City/District">
+                        <input type="text" id="txtCity" runat="server" ClientIDMode="Static" class="form-control" list="panchangCities" aria-label="Panchang city" placeholder="Type Birth City/District" maxlength="150"><datalist id="panchangCities"><%= CityOptions %></datalist>
                         <span class="as_pf_city_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </span>
@@ -633,16 +633,16 @@
             </div>
 
             <!-- Mobile City Button -->
-            <button class="as_pf_city_mobile_btn">Mumbai, Maharashtra</button>
+            <button type="button" class="as_pf_city_mobile_btn" onclick="var place=document.getElementById('panchangPlace'); place.style.display=place.style.display==='block'?'':'block';">Select Panchang Place</button>
 
             <!-- Language (Desktop) -->
             <div class="as_pf_group" style="min-width: 130px;">
                 <label>Select Language</label>
-                <select class="form-control" id="ddlLang">
+                <select class="form-control" id="ddlLang" runat="server" ClientIDMode="Static" aria-label="Select Language">
                     <option value="en" selected>English</option>
                     <option value="hi">Hindi</option>
                     <option value="te">Telugu</option>
-                    <option value="ma">Marathi</option>
+                    <option value="mr">Marathi</option>
                     <option value="ml">Malayalam</option>
                     <option value="ta">Tamil</option>
                     <option value="kn">Kannada</option>
@@ -650,23 +650,52 @@
                 </select>
             </div>
 
+
+            <asp:Button ID="btnContinue" runat="server" Text="Continue" CssClass="as_btn" OnClick="Continue_Click" CausesValidation="false" OnClientClick="return panchangSubmit();" />
+            <details>
+                <summary>Other location (coordinates)</summary>
+                <label for="txtLatitude">Latitude</label><input id="txtLatitude" runat="server" ClientIDMode="Static" type="text" class="form-control" placeholder="19.0760" />
+                <label for="txtLongitude">Longitude</label><input id="txtLongitude" runat="server" ClientIDMode="Static" type="text" class="form-control" placeholder="72.8777" />
+                <label for="txtOffset">UTC offset on selected date</label><input id="txtOffset" runat="server" ClientIDMode="Static" type="text" class="form-control" placeholder="+05:30" />
+                <small>For a suggested city, leave these empty. For another city, enter all three values, including daylight saving where applicable.</small>
+            </details>
+
             <!-- Desktop Nav -->
             <div class="as_pf_nav_desktop">
-                <a href="javascript:;">Previous</a>
-                <a href="javascript:;">Next</a>
+                <asp:LinkButton ID="btnPrevious" runat="server" OnCommand="NavigateDate" CommandArgument="previous" CausesValidation="false" OnClientClick="if (!panchangSubmit()) return false;">Previous</asp:LinkButton>
+                <asp:LinkButton ID="btnNext" runat="server" OnCommand="NavigateDate" CommandArgument="next" CausesValidation="false" OnClientClick="if (!panchangSubmit()) return false;">Next</asp:LinkButton>
             </div>
 
             <!-- Mobile Nav -->
             <div class="as_pf_nav_mobile">
-                <a href="javascript:;">04 May</a>
-                <a href="javascript:;">Today</a>
-                <a href="javascript:;">06 May</a>
+                <asp:LinkButton ID="btnMobilePrevious" runat="server" OnCommand="NavigateDate" CommandArgument="previous" CausesValidation="false" OnClientClick="if (!panchangSubmit()) return false;">Previous</asp:LinkButton>
+                <asp:LinkButton ID="btnToday" runat="server" OnCommand="NavigateDate" CommandArgument="today" CausesValidation="false" OnClientClick="if (!panchangSubmit()) return false;">Today</asp:LinkButton>
+                <asp:LinkButton ID="btnMobileNext" runat="server" OnCommand="NavigateDate" CommandArgument="next" CausesValidation="false" OnClientClick="if (!panchangSubmit()) return false;">Next</asp:LinkButton>
             </div>
 
         </div>
     </div>
 </div>
 
+<div class="container">
+    <p id="sandboxMessage" runat="server"></p>
+    <p id="statusMessage" runat="server" ClientIDMode="Static" role="status" aria-live="polite"></p>
+</div>
+<script>
+var panchangPending = false;
+function panchangSubmit() {
+    if (panchangPending) return false;
+    var date = document.getElementById('txtDate'), city = document.getElementById('txtCity');
+    if (!date.value || !date.checkValidity() || !city.value.trim()) {
+        document.getElementById('statusMessage').textContent = 'Select a valid date and enter a location.';
+        return false;
+    }
+    panchangPending = true;
+    document.getElementById('statusMessage').textContent = 'Loading Panchang...';
+    return true;
+}
+window.addEventListener('pageshow', function () { panchangPending = false; });
+</script>
 <!-- ========================================
      MAIN CONTENT
      ======================================== -->
@@ -681,9 +710,9 @@
                 <div class="as_panchang_datecard">
                     <div class="as_panchang_datecard_header">
                         <div>
-                            <h2>Tuesday, 5 May 2026</h2>
-                            <p><span>Ayana</span> - Uttarayana</p>
-                            <h3>Vasant Ritu</h3>
+                            <h2><%= DisplayDate %></h2>
+                            <p><span>Ayana</span> - <%= Value("Ayana") %></p>
+                            <h3><%= Value("Ritu") %></h3>
                         </div>
                         <img src="https://astro-vedicrishi-in.b-cdn.net/web-vedicrishi/images/icons/rain.png" alt="rain">
                     </div>
@@ -691,39 +720,39 @@
                         <div class="as_panchang_4col">
                             <div class="as_pc_cell">
                                 <h4>Sunrise</h4>
-                                <p>6:8:25</p>
+                                <p><%= Value("Sunrise") %></p>
                             </div>
                             <div class="as_pc_cell">
                                 <h4>Sunset</h4>
-                                <p>19:2:10</p>
+                                <p><%= Value("Sunset") %></p>
                             </div>
                             <div class="as_pc_cell">
                                 <h4>Moonrise</h4>
-                                <p>22:22:6</p>
+                                <p><%= Value("Moonrise") %></p>
                             </div>
                             <div class="as_pc_cell">
                                 <h4>Moonset</h4>
-                                <p>8:27:37</p>
+                                <p><%= Value("Moonset") %></p>
                             </div>
                         </div>
                         <div class="as_panchang_2col">
                             <div class="as_pc_cell">
                                 <h4>Hindu Sunrise</h4>
-                                <p>6:12:8</p>
+                                <p>Not supplied by Prokerala</p>
                             </div>
                             <div class="as_pc_cell">
                                 <h4>Hindu Sunset</h4>
-                                <p>18:58:25</p>
+                                <p>Not supplied by Prokerala</p>
                             </div>
                         </div>
                         <div class="as_panchang_2col">
                             <div class="as_pc_cell">
                                 <h4>Sun Sign</h4>
-                                <p>Aries</p>
+                                <p><%= Value("SunSign") %></p>
                             </div>
                             <div class="as_pc_cell">
                                 <h4>Moon Sign</h4>
-                                <p>Scorpio</p>
+                                <p><%= Value("MoonSign") %></p>
                             </div>
                         </div>
                     </div>
@@ -738,19 +767,19 @@
                         <tbody>
                             <tr>
                                 <td><h4>Tithi</h4></td>
-                                <td><h4>Krishna Chaturthi upto 31:52:32</h4></td>
+                                <td><h4><%= Value("Tithi") %></h4></td>
                             </tr>
                             <tr>
                                 <td><h4>Nakshatra</h4></td>
-                                <td><h4>Jyeshtha upto 12:55:44</h4></td>
+                                <td><h4><%= Value("Nakshatra") %></h4></td>
                             </tr>
                             <tr>
                                 <td><h4>Yog</h4></td>
-                                <td><h4>Shiv upto 24:17:20</h4></td>
+                                <td><h4><%= Value("Yoga") %></h4></td>
                             </tr>
                             <tr>
                                 <td><h4>Karan</h4></td>
-                                <td><h4>Bava upto 18:38:3</h4></td>
+                                <td><h4><%= Value("Karana") %></h4></td>
                             </tr>
                         </tbody>
                     </table>
@@ -764,41 +793,41 @@
                     <div class="as_panchang_2col">
                         <div class="as_pc_cell">
                             <h4>Vikram Samvat</h4>
-                            <p>2083-Raudra</p>
+                            <p><%= Value("vikram-samvat") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Shaka Samvat</h4>
-                            <p>1948-Prabhau</p>
+                            <p><%= Value("shaka-samvat") %></p>
                         </div>
                     </div>
                     <div class="as_panchang_2col">
                         <div class="as_pc_cell">
                             <h4>Paksha</h4>
-                            <p>Krishna-Paksha</p>
+                            <p><%= Value("Paksha") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Ayana</h4>
-                            <p>Uttarayana</p>
+                            <p><%= Value("Ayana") %></p>
                         </div>
                     </div>
                     <div class="as_panchang_2col">
                         <div class="as_pc_cell">
                             <h4>Purnimanta</h4>
-                            <p>Jyeshtha</p>
+                            <p><%= Value("purnimanta") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Amanta</h4>
-                            <p>Vaishakh</p>
+                            <p><%= Value("amanta") %></p>
                         </div>
                     </div>
                     <div class="as_panchang_2col">
                         <div class="as_pc_cell">
                             <h4>Sun Sign</h4>
-                            <p>Aries</p>
+                            <p><%= Value("SunSign") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Moon sign</h4>
-                            <p>Scorpio</p>
+                            <p><%= Value("MoonSign") %></p>
                         </div>
                     </div>
                 </div>
@@ -810,7 +839,7 @@
         <div class="as_panchang_festival_bar" style="margin-top: 25px;">
             <h3>Today's Festival & Vratas</h3>
             <div class="as_pfb_content">
-                <span>Ekadanta Sankashti Chaturthi</span>
+                <span>Not supplied by Prokerala</span>
             </div>
         </div>
 
@@ -824,26 +853,25 @@
                     <div class="as_panchang_inauspicious_3col">
                         <div class="as_pc_cell">
                             <h4>Rahu kalam</h4>
-                            <p>15:48:43-17:25:26</p>
+                            <p><%= Value("Rahu") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Yamghant Kalam</h4>
-                            <p>09:21:51-10:58:34</p>
+                            <p><%= Value("Yamaganda") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Gulika Kalam</h4>
-                            <p>12:35:17-14:12:00</p>
+                            <p><%= Value("Gulika") %></p>
                         </div>
                     </div>
                     <div class="as_panchang_inauspicious_2col">
                         <div class="as_pc_cell">
                             <h4>Dur Muhurtam</h4>
-                            <p>08:43:10-09:34:45</p>
-                            <p style="opacity: 0.4; margin-top: 4px;">--:--:-- - --:--:--</p>
+                            <p><%= Value("Dur") %></p>
                         </div>
                         <div class="as_pc-cell">
                             <h4>Varjyam</h4>
-                            <p>21:54:40-23:42:36</p>
+                            <p><%= Value("Varjyam") %></p>
                         </div>
                     </div>
                 </div>
@@ -856,11 +884,11 @@
                     <div class="as_panchang_2col">
                         <div class="as_pc_cell">
                             <h4>Abhijit Muhurta</h4>
-                            <p>12:10 -13:00</p>
+                            <p><%= Value("Abhijit") %></p>
                         </div>
                         <div class="as_pc_cell">
                             <h4>Amrit Kalam</h4>
-                            <p>03:02:06 - 04:49:54</p>
+                            <p><%= Value("Amrit") %></p>
                         </div>
                     </div>
                 </div>
@@ -877,36 +905,36 @@
                         <h4>Anandadi Yog</h4>
                     </div>
                     <div class="as_pc_cell">
-                        <h4>Mudkara upto 12:55:44</h4>
+                        <h4><%= Value("Anandadi") %></h4>
                     </div>
                 </div>
                 <div class="as_panchang_shool_head">Shool & Nivas</div>
                 <div class="as_panchang_2col">
                     <div class="as_pc_cell">
                         <h4>Disha Shool</h4>
-                        <p>NORTH</p>
+                        <p><%= Value("Disha") %></p>
                     </div>
                     <div class="as_pc_cell">
                         <h4>Nakshatra Shool</h4>
-                        <p>EAST</p>
+                        <p>Not supplied by Prokerala</p>
                     </div>
                 </div>
                 <div style="padding: 14px 15px; text-align: center;">
                     <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #97b0c1; margin: 0 0 4px;">Moon Nivash</h4>
-                    <p style="font-size: 15px; color: var(--white-color); margin: 0; font-family: 'Philosopher', sans-serif; font-weight: 600;">NORTH</p>
+                    <p style="font-size: 15px; color: var(--white-color); margin: 0; font-family: 'Philosopher', sans-serif; font-weight: 600;">Not supplied by Prokerala</p>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Cards -->
         <div class="as_panchang_bottom_cards">
-            <a href="panchang-chaughadiya-muhurata.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-chaughadiya-muhurata.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Chaughadiya<br>Muhurata</h2>
             </a>
-            <a href="panchang-hora-muhurata.aspx" class="as_panchang_bottom_card1">
+            <a href='<%= Link("panchang-hora-muhurata.aspx") %>' class="as_panchang_bottom_card1">
                 <h2>Hora<br>Muhurata</h2>
             </a>
-            <a href="panchang-daily.aspx" class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
+            <a href='<%= Link("panchang-daily.aspx") %>' class="as_panchang_bottom_card" style="background: linear-gradient(135deg, #e040a0, var(--secondary-color));">
                 <h2>Daily<br>Panchang</h2>
             </a>
         </div>

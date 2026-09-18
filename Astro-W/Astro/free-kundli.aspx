@@ -1,6 +1,22 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AstroMaster.master" AutoEventWireup="true" CodeFile="free-kundli.aspx.cs" Inherits="free_kundli" %>
+<%@ Page Title="Free Kundli Horoscope" Language="C#" MasterPageFile="~/AstroMaster.master" AutoEventWireup="true" CodeFile="free-kundli.aspx.cs" Inherits="free_kundli" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<%@ Register Src="~/Controls/MatchingBirthDetails.ascx" TagPrefix="astro" TagName="BirthDetails" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server"><style>
+    #free-kundli { width: 100%; scroll-margin-top: 30px; }
+    #free-kundli .form-control { color-scheme: dark; }
+    #free-kundli select option { background: #193e50; color: white; }
+    #free-kundli .matching-help, #free-kundli .kundli-help { font-size: 14px; line-height: 1.5; margin-top: 8px; }
+    #free-kundli .kundli-notice, #free-kundli .kundli-error { padding: 15px; margin: 15px 0; border: 1px solid #f9a44a; border-radius: 6px; }
+    #free-kundli .kundli-error { border-color: #ff9797; }
+    #free-kundli .kundli-chart { display: block; background: white; width: 100%; max-width: 600px; height: auto; margin: 20px auto; }
+    #free-kundli h3, #free-kundli h4 { margin: 24px 0 12px; }
+    #free-kundli details { padding: 10px 0; }
+    #free-kundli details p { margin-top: 10px; }
+    #free-kundli .kundli-table, #free-kundli caption { color: inherit; }
+    #free-kundli .kundli-table th, #free-kundli .kundli-table td { border-color: #57707d; }
+    #free-kundli .kundli-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; }
+    #free-kundli .kundli-actions { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+</style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <%--        <section class="as_breadcrum_wrapper">
@@ -24,7 +40,7 @@
                     <div class="col-lg-8">
                         <h2 class="as_heading as_heading_center text-center">Kundli - Your Free Online Janam Kundali</h2>
                         <p class="as_font14 as_padderBottom10 text-center as_font14">Janam Kundli is your astrological chart that Bharat astrologers create based on your exact birth date, birth place and birth time.</p>
-                        <p class="as_font14 as_padderBottom20 text-center as_font14">Bharat Rishi brings you the Free Kundli Calculator that provides you with 100% Original and Accurate Kundali Predictions in two Indian languages!</p> 
+                        <p class="as_font14 as_padderBottom20 text-center as_font14">Generate your birth chart and a detailed horoscope in English, with Nakshatra, Rasi, Yoga, Mangal Dosha and Dasha details from Prokerala.</p>
 
 
 
@@ -39,122 +55,67 @@
                                     <label class="fw-bold text-center">Enter Birth Details</label>
 
 
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                        <ContentTemplate>
-                                <div class="col-12">
-                                    <label>name</label>
-                                    <div class="form-group">
-<asp:TextBox ID="txtFirstName" runat="server" MaxLength="128" CssClass="form-control"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label>gender</label>
-                                    <div class="form-group as_select_box">
-            <asp:DropDownList ID="ddlGender" runat="server" CssClass="form-control">
-                <asp:ListItem Value="1">Male</asp:ListItem>
-                <asp:ListItem Value="2">Female</asp:ListItem>
-                <asp:ListItem Value="3">Other</asp:ListItem>
-            </asp:DropDownList>
-                                    </div> 
-                                </div>
-<%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>email</label>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Email">
-                                    </div>
-                                </div>--%>
-<%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>mobile number</label>
-                                    
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Mobile Number">
-                                    </div>
-                                </div>--%>
-
-<%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>time of day</label>
-                                    <div class="form-group as_select_box" data-placeholder="Time of day">
-                                        <select class="form-control">
-                                            <option value="1"> Morning </option>
-                                            <option value="2">Afternoon</option>
-                                            <option value="3">Evening </option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-<%--                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <label>way to reach</label>
-                                    <div class="form-group as_select_box" data-placeholder="Way to reach">
-                                        <select class="form-control">
-                                            <option value="1">Phone </option>
-                                            <option value="2">Email</option>
-                                        </select>
-                                    </div>
-                                </div>--%>
-                                <div class="col-12">
-                                    <label>Birth Details</label>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-<asp:DropDownList ID="ddlDay" runat="server" CssClass="form-control p-2 text-center"></asp:DropDownList>
-                                                
-                                                <%--<input class="form-control" type="text" placeholder="Date">--%>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <%--<input class="form-control" type="text" placeholder="Month">--%>
-<asp:DropDownList ID="ddlMonth" runat="server" AutoPostBack="true"  CssClass="form-control p-2 text-center"></asp:DropDownList> 
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <%--<input class="form-control" type="text" placeholder="Year">--%>
-<asp:DropDownList ID="ddlYear" runat="server" AutoPostBack="true"  CssClass="form-control p-2 text-center"></asp:DropDownList>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <%--<label>Preferred Time</label>--%>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <%--<input class="form-control" type="text" placeholder="Hrs">--%>
-<asp:DropDownList ID="ddlHour" runat="server" CssClass="form-control p-2 text-center"></asp:DropDownList>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <%--<input class="form-control" type="text" placeholder="Mins">--%>
-<asp:DropDownList ID="ddlMinute" runat="server" CssClass="form-control p-2 text-center"></asp:DropDownList>
-                                                
-                                            </div>    
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <%--<input class="form-control" type="text" placeholder="Sec">--%>
-<asp:DropDownList ID="ddlSecond" runat="server" CssClass="form-control p-2 text-center"></asp:DropDownList>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label>Birth place</label>
-                                    <div class="form-group">
-                                        <%--<input class="form-control" type="text" placeholder="Enter your birth place">--%>
-<asp:TextBox ID="txtBirthPlace" runat="server" MaxLength="128" CssClass="form-control"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-12 text-center as_padderTop20">
-                                    <%--<a href="javascript:;" class="as_btn">make an appointment</a>--%>
-                                    <asp:LinkButton runat="server" ID="lnkGenHoroscope" CssClass="as_btn" ValidationGroup="vg1">Generate Horoscope</asp:LinkButton>
-                                </div>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
+                                    <div id="free-kundli">
+    <asp:UpdatePanel ID="updKundli" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <asp:Panel ID="pnlSandbox" runat="server" CssClass="kundli-notice">
+                <strong>Sandbox mode - test horoscope only.</strong> Use a January 1 birth date (any past year).
+                Actual birth dates require production Prokerala credentials. Your entered date will never be changed automatically.
+            </asp:Panel>
+            <asp:Panel ID="pnlError" runat="server" Visible="false" CssClass="kundli-error" role="alert">
+                <asp:Literal ID="litError" runat="server" />
+            </asp:Panel>
+            <asp:Panel ID="pnlBirthForm" runat="server" DefaultButton="btnGenerate">
+                <astro:BirthDetails ID="BirthDetails" runat="server" />
+                <div class="form-group">
+                    <asp:Label runat="server" AssociatedControlID="ddlChartStyle" Text="Birth chart style" />
+                    <asp:DropDownList ID="ddlChartStyle" runat="server" CssClass="form-control">
+                        <asp:ListItem Value="south-indian" Text="South Indian" />
+                        <asp:ListItem Value="north-indian" Text="North Indian" />
+                    </asp:DropDownList>
+                </div>
+                <p class="kundli-help">Generate Horoscope sends your birth date, time and coordinates to Prokerala to calculate your horoscope. Uses Lahiri ayanamsa.</p>
+                <asp:Button runat="server" ID="btnGenerate" CssClass="as_btn" Text="Generate Horoscope" OnClick="Generate_Click" CausesValidation="false" />
+            </asp:Panel>
+            <asp:Panel ID="pnlResults" runat="server" Visible="false" role="region" aria-label="Generated horoscope">
+                <h3>Your horoscope</h3>
+                <p><asp:Literal ID="litProfile" runat="server" /></p>
+                <p class="kundli-help">Calculated by Prokerala using Lahiri ayanamsa. Interpretations below are supplied by Prokerala.</p>
+                <asp:Panel ID="pnlChart" runat="server" Visible="false">
+                    <h4><asp:Literal ID="litChartStyle" runat="server" /></h4>
+                    <asp:Image ID="imgChart" runat="server" CssClass="kundli-chart" AlternateText="Rasi birth chart calculated from your birth details" />
+                </asp:Panel>
+                <asp:Panel ID="pnlChartError" runat="server" CssClass="kundli-notice" Visible="false" role="alert">
+                    <p><asp:Literal ID="litChartError" runat="server" /></p>
+                    <asp:Button ID="btnRetryChart" runat="server" Text="Retry Birth Chart" CssClass="as_btn" OnClick="Generate_Click" CausesValidation="false" />
+                </asp:Panel>
+                <asp:Literal ID="litHoroscope" runat="server" />
+                <div class="kundli-actions">
+                    <asp:Button ID="btnEdit" runat="server" Text="Edit Birth Details" CssClass="as_btn" OnClick="Edit_Click" CausesValidation="false" />
+                </div>
+            </asp:Panel>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <asp:UpdateProgress ID="kundliProgress" runat="server" AssociatedUpdatePanelID="updKundli" DisplayAfter="100">
+        <ProgressTemplate><p class="kundli-notice" role="status">Please wait while we process your birth details...</p></ProgressTemplate>
+    </asp:UpdateProgress>
+</div>
+<script>
+    (function () {
+        var manager = Sys.WebForms.PageRequestManager.getInstance();
+        manager.add_initializeRequest(function (sender, args) {
+            if (sender.get_isInAsyncPostBack()) args.set_cancel(true);
+        });
+        manager.add_beginRequest(function () {
+            document.getElementById('free-kundli').setAttribute('aria-busy', 'true');
+        });
+        manager.add_endRequest(function () {
+            var form = document.getElementById('free-kundli');
+            form.removeAttribute('aria-busy');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }());
+</script>
 
 
 
@@ -181,7 +142,7 @@
                         <h1 class="as_heading">What is Kundli?</h1>
                         <p>The word "kundli" is derived from the Sanskrit word "kundala," which means "coiled snake." In Vedic astrology, a kundli is a Birth Chart or a Horoscope. It is a graphical representation of a person's birth details, planetary positions, and other astrological aspects.</p>
                         <p>Based on ancient Vedic principles, Kundli has the power to reveal what you are truly destined for. An individual’s birthchart/ Kundali is divided into 12 houses, each depicting a specific sign and planet and these factors influence and control multiple aspects of your life such as your personality, characteristics, attributes, habits, strengths, weaknesses, & so on.</p>
-                        <a href="javascript:;" class="as_btn">Create Your Free Kundli Now</a>
+                        <a href="#free-kundli" class="as_btn">Create Your Free Kundli Now</a>
 
 <%--                        <div class="as_contact_expert">
                             <span class="as_icon">
